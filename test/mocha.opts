@@ -1,0 +1,2 @@
+--compilers es6:babel-core/register
+--timeout 60000
