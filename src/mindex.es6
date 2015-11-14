@@ -1,3 +1,4 @@
+'use strict'
 
 import {binarySearch, insertAt, removeAt} from './utils'
 import isArray from 'mout/lang/isArray'

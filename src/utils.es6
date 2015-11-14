@@ -1,3 +1,4 @@
+'use strict'
 
 // Some code taken with gratitiude from the LokiJS project.
 
