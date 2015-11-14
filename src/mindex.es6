@@ -217,7 +217,7 @@ var BaseSecondaryIndex = {
       }
     } else {
       if (pos.found) {
-        this.values[pos.index].delete(keyList, value)
+        this.values[pos.index].remove(keyList, value)
       }
     }
   },
