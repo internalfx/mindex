@@ -129,34 +129,48 @@ var testdb = [
   title: 'Senior Klingon Consultant' }
 ]
 
-describe('mindex', () => {
-  describe('simple keys', () => {
-    let index = createIndex()
+describe('mindex', function () {
+  describe('simple keys', function () {
+    let index
 
-    it('set does not error', (done) => {
+    before(function () {
+      index = createIndex(['age'])
       testdb.forEach(function (record) {
-        index.set(record.age, record.id)
+        index.insertRecord(record)
+      })
+    })
+
+    it('insertRecord does not error', function (done) {
+      testdb.forEach(function (record) {
+        index.insertRecord(record)
       })
       done()
     })
 
-    it('get returns correct result', (done) => {
+    it('get returns correct result', function (done) {
       let result = index.get(1)
       assert.deepEqual(result, ['Serena Bruen'])
       done()
     })
 
-    it('between returns correct result', (done) => {
+    it('between returns correct result', function (done) {
       let result = index.between([1], [4])
       assert.deepEqual(result, ['Serena Bruen', 'Albertha Simonis Ms.', 'Shana Lubowitz'])
       done()
     })
+
+    it('clear removes all data', function (done) {
+      index.clear()
+      let result = index.getAll()
+      assert.deepEqual(result, [])
+      done()
+    })
   })
 
-  describe('compound keys', () => {
+  describe('compound keys', function () {
     let index = createIndex(['title', 'age'])
 
-    it('set does not error', (done) => {
+    it('insertRecord does not error', (done) => {
       testdb.forEach(function (record) {
         index.insertRecord(record)
       })
