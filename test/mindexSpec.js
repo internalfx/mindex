@@ -1,9 +1,10 @@
+'use strict'
 
 /* global describe */
 /* global it */
 
-import {assert} from 'chai'
-import createIndex from '../src/mindex'
+var assert = require('chai').assert
+var createIndex = require('../src/mindex')
 
 var testdb = [
   { age: 46,

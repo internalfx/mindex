@@ -1,10 +1,11 @@
 'use strict'
 
-import {binarySearch, insertAt, removeAt} from './utils'
-import isArray from 'mout/lang/isArray'
-import merge from 'mout/object/merge'
-import omit from 'mout/object/omit'
-import clone from 'mout/lang/clone'
+var binarySearch = require('./utils').binarySearch
+var insertAt = require('./utils').insertAt
+var removeAt = require('./utils').removeAt
+var isArray = require('mout/lang/isArray')
+var omit = require('mout/object/omit')
+var clone = require('mout/lang/clone')
 
 var BaseSecondaryIndex = {
 
@@ -105,7 +106,7 @@ var BaseSecondaryIndex = {
   },
 
   between: function (leftKeys, rightKeys, opts) {
-    opts = merge({
+    opts = Object.assign({
       leftInclusive: true,
       rightInclusive: false,
       limit: undefined,
@@ -249,7 +250,8 @@ var BaseSecondaryIndex = {
   }
 }
 
-var createIndex = function (fieldList = []) {
+var createIndex = function (fieldList) {
+  fieldList = fieldList || []
   var index = Object.create(BaseSecondaryIndex)
 
   if (!isArray(fieldList)) {
@@ -264,4 +266,4 @@ var createIndex = function (fieldList = []) {
   return index
 }
 
-export default createIndex
+module.exports = createIndex
