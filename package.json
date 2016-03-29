@@ -1,6 +1,6 @@
 {
   "name": "mindex",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A small simple javascript compound index.",
   "main": "./src/mindex.js",
   "scripts": {
