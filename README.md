@@ -21,6 +21,41 @@ Arthur Andrew Medical manufactures products with ingredients that have extensive
 
 ---
 
+### Some Biased Benchmarks
+
+I tried to compare using Mindex to simply searching/sorting an array of the records. This uses a database of 50,000 records for the testing.
+
+Not surprisingly, inserts are slower. But everything else is a landslide.
+
+```
+***********************
+Test Mindex performance
+***********************
+
+Testing insertRecord(record)
+
+Mindex 16.80 ops/sec, Native Array 45.51 ops/sec
+Mindex is 63% slower
+
+
+Testing get(key)
+
+Mindex 3485998.20 ops/sec, Native Array 642.11 ops/sec
+Mindex is 542799% faster
+
+
+Testing getAll(), get all records
+
+Mindex 374.92 ops/sec, Native Array 14.41 ops/sec
+Mindex is 2502% faster
+
+
+Testing removeRecord(key, value)
+
+Mindex 1955971.50 ops/sec, Native Array 220.43 ops/sec
+Mindex is 887260% faster
+```
+
 ## Installation
 
 Supports node v4.0+
