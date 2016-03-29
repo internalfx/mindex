@@ -145,7 +145,7 @@ undefined
 
 ##### Description
 
-Inserts a new object into the index.
+Inserts a new object into the index. This is a convenience method for `set()`.
 
 ##### Example
 
@@ -174,7 +174,7 @@ undefined
 
 ##### Description
 
-Removes an object from the index.
+Removes an object from the index. This is a convenience method for `remove()`.
 
 ##### Example
 
@@ -203,7 +203,7 @@ undefined
 
 ##### Description
 
-Replaces an object in the index with new data.
+Replaces an object in the index with new data. This is a convenience method for `remove()` and `set()`.
 
 ##### Example
 
@@ -218,13 +218,51 @@ mindex.updateRecord({
 
 ---
 
+### `set(keyList, value)`
+
+##### Parameters
+
+| key | default | type | description |
+| --- | --- | --- | --- |
+| keyList | undefined | Array, String, Integer | An array of values to search for in the index. If the index is not compound a string or integer may be used. |
+| value | undefined | String, Integer | The value to insert at the given key |
+
+##### returns
+
+undefined
+
+##### Description
+
+Inserts the given value at the given key.
+
+##### Example
+
+```javascript
+
+var mindex = Mindex(['city', 'age'])
+
+// insertRecord and set produce equivalent results in the example below.
+mindex.insertRecord({
+  id: 1,
+  name: 'John',
+  city: 'Denver',
+  age: 35
+})
+mindex.set(['Denver', 35], 1)
+
+// Get all 35 year olds in the city of Denver
+mindex.get(['Denver', 35]) // returns [1]
+```
+
+---
+
 ### `get(keyList)`
 
 ##### Parameters
 
 | key | default | type | description |
 | --- | --- | --- | --- |
-| keyList | undefined | Mixed | An array of values to retrieve from the index. If the index is not compound a string or integer may be used. |
+| keyList | undefined | Array, String, Integer | An array of values to search for in the index. If the index is not compound a string or integer may be used. |
 
 ##### returns
 
@@ -257,6 +295,54 @@ mindex.get(['Denver', 35]) // returns [1]
 
 // If you are only looking for 'Denver' you can omit the array.
 mindex.get('Denver') // returns [1, 2]
+```
+
+---
+
+### `remove(keyList, value)`
+
+##### Parameters
+
+| key | default | type | description |
+| --- | --- | --- | --- |
+| keyList | undefined | Array, String, Integer | An array of values to search for in the index. If the index is not compound a string or integer may be used. |
+| value | undefined | String, Integer | The value to remove at the given key |
+
+##### returns
+
+undefined
+
+##### Description
+
+Removes the given value from the index at the given key.
+
+##### Example
+
+```javascript
+
+var mindex = Mindex(['city', 'age'])
+
+mindex.insertRecord({
+  id: 1,
+  name: 'John',
+  city: 'Denver',
+  age: 35
+})
+
+mindex.get(['Denver', 35]) // returns [1]
+
+// removeRecord and remove produce equivalent results in the example below.
+mindex.removeRecord({
+  id: 1,
+  name: 'John',
+  city: 'Denver',
+  age: 35
+})
+// -- or --
+mindex.remove(['Denver', 35], 1)
+
+// Get all 35 year olds in the city of Denver
+mindex.get(['Denver', 35]) // returns []
 ```
 
 ---
