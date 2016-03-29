@@ -5,7 +5,7 @@ A small simple javascript compound index that borrows heavily from LokiJS.
 
 Useful for finding objects in collections, Mindex is able to search huge arrays of data almost instantly. It can return ranges of the data, and the results are always sorted. It also has a very intuitive query syntax and even supports `skip` and `offset` so you can quickly paginate results.
 
-Mindex makes finding informtion fast.
+Mindex makes finding information fast.
 
 ### Features
 
