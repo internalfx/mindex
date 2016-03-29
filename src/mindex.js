@@ -197,7 +197,7 @@ var BaseSecondaryIndex = {
     }
   },
 
-  remove: function (keyList, value) {
+  _remove: function (keyList, value) {
     if (!isArray(keyList)) {
       keyList = [keyList]
     }
@@ -218,7 +218,7 @@ var BaseSecondaryIndex = {
       }
     } else {
       if (pos.found) {
-        this.values[pos.index].remove(keyList, value)
+        this.values[pos.index]._remove(keyList, value)
       }
     }
   },
@@ -245,7 +245,7 @@ var BaseSecondaryIndex = {
       return data[field] || null
     })
 
-    this.remove(keyList, data.id)
+    this._remove(keyList, data.id)
   },
 
   updateRecord: function (data) {
