@@ -53,13 +53,13 @@ index.insertRecord({
   age: 25
 })
 
-// Get id's by key
+// Get IDs by key
 console.log(index.get(25)) // [ 'Betty', 'John' ]
 
-// Get all id's sorted by key (age)
+// Get all IDs sorted by key (age)
 console.log(index.getAll()) // [ 'Betty', 'John', 'Darcy', 'Jim' ]
 
-// Get all id's within a given range
+// Get all IDs within a given range
 console.log(index.query({'>': [22], '<': [29]})) // [ 'Betty', 'John', 'Darcy' ]
 
 ```
@@ -175,4 +175,191 @@ mindex.updateRecord({
   city: 'Denver',
   age: 35
 })
+```
+
+---
+
+### `get(keyList)`
+
+##### Parameters
+
+| key | default | type | description |
+| --- | --- | --- | --- |
+| keyList | undefined | Mixed | An array of values to retrieve from the index. If the index is not compound a string or integer may be used. |
+
+##### returns
+
+An array of found record IDs.
+
+##### Description
+
+Retrieves an array of matching IDs from the index.
+
+##### Example
+
+```javascript
+
+mindex.insertRecord({
+  id: 1,
+  name: 'John',
+  city: 'Denver',
+  age: 35
+})
+
+mindex.insertRecord({
+  id: 2,
+  name: 'Betty',
+  city: 'Denver',
+  age: 37
+})
+
+// Get all 35 year olds in the city of Denver
+mindex.get(['Denver', 35]) // returns [1]
+
+// If you are only looking for 'Denver' you can omit the array.
+mindex.get('Denver') // returns [1, 2]
+```
+
+---
+
+### `getAll()`
+
+##### returns
+
+An array of all IDs in the index, sorted by key(s).
+
+##### Description
+
+Retrieves an array of all IDs.
+
+##### Example
+
+```javascript
+
+mindex.insertRecord({
+  id: 1,
+  name: 'John',
+  city: 'Denver',
+  age: 35
+})
+
+mindex.insertRecord({
+  id: 2,
+  name: 'Betty',
+  city: 'Denver',
+  age: 37
+})
+
+mindex.getAll() // returns [1, 2]
+```
+
+---
+
+### `query(query)`
+
+##### Parameters
+
+| key | default | type | description |
+| --- | --- | --- | --- |
+| query | undefined | Object | An object representing the query. |
+
+##### Query Options
+
+| key | default | type | description |
+| --- | --- | --- | --- |
+| `>` | undefined | Array | An array of keys to search for. Mutually exclusive with `>=` |
+| `>=` | undefined | Array | An array of keys to search for. Mutually exclusive with `>` |
+| `<` | undefined | Array | An array of keys to search for. Mutually exclusive with `<=` |
+| `<=` | undefined | Array | An array of keys to search for. Mutually exclusive with `<` |
+| `offset` | 0 | Integer | Number of IDs to skip, can be used for pagination. |
+| `limit` | undefined | Integer | Maximum number of IDs to return |
+
+##### returns
+
+An array of found record IDs.
+
+##### Description
+
+Retrieves an array of matching IDs from the index.
+
+##### Example
+
+```javascript
+
+var mindex = Mindex(['city', 'age'])
+
+mindex.insertRecord({
+  id: 1,
+  name: 'John',
+  city: 'Denver',
+  age: 35
+})
+
+mindex.insertRecord({
+  id: 2,
+  name: 'Betty',
+  city: 'Denver',
+  age: 37
+})
+
+mindex.insertRecord({
+  id: 3,
+  name: 'Jen',
+  city: 'Phoenix',
+  age: 36
+})
+
+mindex.insertRecord({
+  id: 4,
+  name: 'Jim',
+  city: 'Denver',
+  age: 37
+})
+
+index.query({'>': ['Denver', 35], '<=': ['Denver', 37]}) // returns [2,4]
+
+index.query({'>=': ['Denver', 35], '<=': ['Denver', 37], offset: 1}) // returns [2,4]
+
+index.query({'>=': ['Denver', 35], '<=': ['Denver', 37], limit: 1}) // returns [1,2]
+
+index.query({'>': ['Denver'], '<=': ['Phoenix']}) // returns [3]
+
+index.query({'>=': ['Denver'], '<=': ['Phoenix']}) // returns [1,2,4,3]
+
+index.query({'>=': ['Denver'], '<': ['Phoenix']}) // returns [1,2,4]
+```
+
+---
+
+### `clear()`
+
+##### returns
+
+undefined
+
+##### Description
+
+Clears the index.
+
+##### Example
+
+```javascript
+
+mindex.insertRecord({
+  id: 1,
+  name: 'John',
+  city: 'Denver',
+  age: 35
+})
+
+mindex.insertRecord({
+  id: 2,
+  name: 'Betty',
+  city: 'Denver',
+  age: 37
+})
+
+mindex.clear()
+
+mindex.getAll() // returns []
 ```
