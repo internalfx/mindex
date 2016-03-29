@@ -327,6 +327,8 @@ index.query({'>': ['Denver'], '<=': ['Phoenix']}) // returns [3]
 index.query({'>=': ['Denver'], '<=': ['Phoenix']}) // returns [1,2,4,3]
 
 index.query({'>=': ['Denver'], '<': ['Phoenix']}) // returns [1,2,4]
+
+index.query({'>=': ['Denver']}) // returns [1,2,4,3]
 ```
 
 ---
