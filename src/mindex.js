@@ -9,7 +9,7 @@ var clone = require('mout/lang/clone')
 
 var BaseSecondaryIndex = {
 
-  set: function (keyList, value) {
+  _set: function (keyList, value) {
     if (!isArray(keyList)) {
       keyList = [keyList]
     }
@@ -29,11 +29,11 @@ var BaseSecondaryIndex = {
       }
     } else {
       if (pos.found) {
-        this.values[pos.index].set(keyList, value)
+        this.values[pos.index]._set(keyList, value)
       } else {
         insertAt(this.keys, pos.index, key)
         let newIndex = createIndex()
-        newIndex.set(keyList, value)
+        newIndex._set(keyList, value)
         insertAt(this.values, pos.index, newIndex)
       }
     }
@@ -237,7 +237,7 @@ var BaseSecondaryIndex = {
       return data[field] || null
     })
 
-    this.set(keyList, data.id)
+    this._set(keyList, data.id)
   },
 
   removeRecord: function (data) {
