@@ -152,7 +152,7 @@ async.series([
     var aindex = []
 
     for (let rec of db) {
-      mindex.insertRecord(rec.age, rec.name)
+      mindex.insertRecord(rec)
     }
 
     for (let rec of db) {
@@ -173,7 +173,7 @@ async.series([
       setup: () => {
       },
       fn: function () {
-        _.sortByOrder(aindex, ['key'], ['asc'])
+        _.orderBy(aindex, ['key'], ['asc'])
       }
     })
 
