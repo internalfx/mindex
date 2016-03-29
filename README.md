@@ -60,6 +60,14 @@ Mindex 1955971.50 ops/sec, Native Array 220.43 ops/sec
 Mindex is 887260% faster
 ```
 
+### What makes Mindex so fast?
+
+A very simple (and old) idea, [Binary Search](https://en.wikipedia.org/wiki/Binary_search_algorithm). Mindex populates two arrays, an array of `keys` and an array of `values`. What makes Mindex useful is how it abstracts all the complexity of managing the arrays from you, and the simple querying capabilities it provides.
+
+###### If Mindex is just arrays of keys and values, how is it compound?
+
+After searching through an index it is possible for Mindex to find....another Mindex. This complexity is also handled for you. Mindex will create as many nested indexes as is necessary to hold your data. There is no limit on the depth of compound keys.
+
 ## Installation
 
 Supports node v4.0+
