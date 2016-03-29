@@ -229,6 +229,10 @@ var BaseSecondaryIndex = {
   },
 
   insertRecord: function (data) {
+    if (data.id == null) {
+      throw new Error('Record must have an id property')
+    }
+
     let keyList = this.fieldList.map(function (field) {
       return data[field] || null
     })
