@@ -9,7 +9,7 @@ A small simple javascript compound index that borrows heavily from LokiJS.
 - **Fast** - Records can be found in O(log n) time.
 - **Powerful** - Supports compound keys and allows for a simple query syntax.
 
-[![npm version](https://img.shields.io/npm/v/mindex.svg)](https://www.npmjs.com/package/mindex) [![license](https://img.shields.io/npm/l/mindex.svg)](https://github.com/internalfx/mindex/blob/master/LICENSE)
+[![npm version](https://img.shields.io/npm/v/mindex.svg)](https://www.npmjs.com/package/mindex) [![license](https://img.shields.io/npm/l/mindex.svg)](https://github.com/internalfx/mindex/blob/master/LICENSE) [![Build Status](https://travis-ci.org/internalfx/mindex.svg?branch=master)](https://travis-ci.org/internalfx/mindex)
 
 [![NPM](https://nodei.co/npm/mindex.png?downloads=true&downloadRank=true&stars=true)](https://npmjs.org/package/mindex)
 
