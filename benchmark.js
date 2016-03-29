@@ -1,10 +1,8 @@
 'use strict'
 
-require('babel-core/register')
-
 var _ = require('lodash')
 var faker = require('faker')
-var createIndex = require('./src/mindex').default
+var createIndex = require('./src/mindex')
 var Benchmark = require('benchmark')
 var colors = require('colors')
 var async = require('async')
@@ -26,7 +24,7 @@ var compileResult = (results) => {
 }
 
 var db = []
-var dbSize = 25000
+var dbSize = 50000
 
 console.log('\nCreating index of ' + dbSize + ' records')
 console.time('Done!')
@@ -146,7 +144,7 @@ async.series([
   },
 
   (done) => {
-    console.log('\nTesting between([undefined], [undefined], {rightInclusive: true}), get all records\n'.yellow)
+    console.log('\nTesting getAll(), get all records\n'.yellow)
 
     var suite = new Benchmark.Suite()
     var results = []
@@ -166,7 +164,7 @@ async.series([
       setup: () => {
       },
       fn: () => {
-        mindex.between([undefined], [undefined], {rightInclusive: true})
+        mindex.getAll()
       }
     })
 
@@ -223,7 +221,7 @@ async.series([
         for (let rec of db) {
           aindex.push({key: rec.age, val: rec.name})
         }
-        randRec = db[_.random(0, db.length)]
+        randRec = db[_.random(0, db.length - 1)]
       },
       fn: function () {
         _.remove(aindex, {key: randRec.age, val: randRec.name})
