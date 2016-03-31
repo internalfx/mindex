@@ -355,7 +355,19 @@ mindex.get(['Denver', 35]) // returns []
 
 ---
 
-### `getAll()`
+### `getAll(options)`
+
+##### Parameters
+
+| key | default | type | description |
+| --- | --- | --- | --- |
+| options | undefined | Object | An options object. |
+
+##### Options
+
+| key | default | type | description |
+| --- | --- | --- | --- |
+| `order` | 'asc' | String | Return results in ascending or descending order |
 
 ##### returns
 
@@ -406,6 +418,7 @@ mindex.getAll() // returns [1, 2]
 | `<=` | undefined | Array | An array of keys to search for. Mutually exclusive with `<` |
 | `offset` | 0 | Integer | Number of IDs to skip, can be used for pagination. |
 | `limit` | undefined | Integer | Maximum number of IDs to return |
+| `order` | 'asc' | String | Return results in ascending or descending order |
 
 ##### returns
 
@@ -413,7 +426,7 @@ An array of found record IDs.
 
 ##### Description
 
-Retrieves an array of matching IDs from the index.
+Retrieves an array of matching IDs from the index. When used with `limit` and `order`, you can quickly get the highest or lowest value in the index.
 
 ##### Example
 
@@ -462,6 +475,10 @@ index.query({'>=': ['Denver'], '<=': ['Phoenix']}) // returns [1,2,4,3]
 index.query({'>=': ['Denver'], '<': ['Phoenix']}) // returns [1,2,4]
 
 index.query({'>=': ['Denver']}) // returns [1,2,4,3]
+
+index.query({limit: 1, order: 'desc'}) // returns [3]
+
+index.query({limit: 1, order: 'asc'}) // returns [1]
 ```
 
 ---
