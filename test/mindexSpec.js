@@ -2,6 +2,7 @@
 
 /* global describe */
 /* global it */
+/* global before */
 
 var assert = require('chai').assert
 var createIndex = require('../src/mindex')
@@ -189,6 +190,80 @@ describe('mindex', function () {
       done()
     })
 
+    it('getAll returns correct result', (done) => {
+      let result = index.getAll()
+      assert.deepEqual(result, [
+        'Magdalen Zulauf Mr.',
+        'Dr. Jess Stokes',
+        'Marquise Weimann',
+        'Elmo Hansen',
+        'Santino Kuvalis',
+        'Kaley Jones',
+        'Catherine Predovic',
+        'Hilda O\'Kon',
+        'Wilfredo Strosin',
+        'Odie Reichel',
+        'Axel Block',
+        'Clemens Howell Dr.',
+        'Lamar Goodwin',
+        'Makayla McLaughlin',
+        'Wendy Dare',
+        'Antonio Monahan Mr.',
+        'Leland Bahringer',
+        'Lesley Howe',
+        'Elva Graham',
+        'Ms. Kiera Hodkiewicz',
+        'Ashton Oberbrunner',
+        'Miss Fermin Bartell',
+        'Ardella O\'Conner',
+        'Durward Runolfsson',
+        'Clemmie Powlowski',
+        'Serena Bruen',
+        'Shana Lubowitz',
+        'Albertha Simonis Ms.',
+        'Kavon Hammes',
+        'Kyle MacGyver'
+      ])
+      done()
+    })
+
+    it('getAll returns correct result in descending order', (done) => {
+      let result = index.getAll({order: 'desc'})
+      assert.deepEqual(result, [
+        'Kyle MacGyver',
+        'Kavon Hammes',
+        'Albertha Simonis Ms.',
+        'Shana Lubowitz',
+        'Serena Bruen',
+        'Clemmie Powlowski',
+        'Durward Runolfsson',
+        'Ardella O\'Conner',
+        'Miss Fermin Bartell',
+        'Ashton Oberbrunner',
+        'Ms. Kiera Hodkiewicz',
+        'Elva Graham',
+        'Lesley Howe',
+        'Leland Bahringer',
+        'Antonio Monahan Mr.',
+        'Wendy Dare',
+        'Makayla McLaughlin',
+        'Lamar Goodwin',
+        'Clemens Howell Dr.',
+        'Axel Block',
+        'Odie Reichel',
+        'Wilfredo Strosin',
+        'Hilda O\'Kon',
+        'Catherine Predovic',
+        'Kaley Jones',
+        'Santino Kuvalis',
+        'Elmo Hansen',
+        'Marquise Weimann',
+        'Dr. Jess Stokes',
+        'Magdalen Zulauf Mr.'
+      ])
+      done()
+    })
+
     it('between returns correct result for one level deep', (done) => {
       let result = index.between(['Internal Response Agent'], ['Senior Detector Agent'], {rightInclusive: true})
       assert.deepEqual(result, ['Lesley Howe', 'Elva Graham', 'Ms. Kiera Hodkiewicz', 'Ashton Oberbrunner', 'Miss Fermin Bartell', 'Ardella O\'Conner', 'Durward Runolfsson', 'Clemmie Powlowski', 'Serena Bruen', 'Shana Lubowitz'])
@@ -207,9 +282,27 @@ describe('mindex', function () {
       done()
     })
 
-    it("Query {'>': ['Internal Response Agent', 20], '<=': ['Senior Detector Agent', 3], offset: 1}", (done) => {
+    it("Query {'>': ['Internal Response Agent', 20], '<=': ['Senior Detector Agent', undefined], offset: 1}", (done) => {
       let result = index.query({'>': ['Internal Response Agent', 20], '<=': ['Senior Detector Agent', undefined], offset: 1})
       assert.deepEqual(result, ['Ms. Kiera Hodkiewicz', 'Ashton Oberbrunner', 'Miss Fermin Bartell', 'Ardella O\'Conner', 'Durward Runolfsson', 'Clemmie Powlowski', 'Serena Bruen', 'Shana Lubowitz'])
+      done()
+    })
+
+    it("Query {'>': ['Internal Response Agent', 20], '<=': ['Senior Detector Agent', undefined], offset: 1, order: 'desc'}", (done) => {
+      let result = index.query({'>': ['Internal Response Agent', 20], '<=': ['Senior Detector Agent', undefined], offset: 1, order: 'desc'})
+      assert.deepEqual(result, ['Serena Bruen', 'Clemmie Powlowski', 'Durward Runolfsson', 'Ardella O\'Conner', 'Miss Fermin Bartell', 'Ashton Oberbrunner', 'Ms. Kiera Hodkiewicz', 'Elva Graham'])
+      done()
+    })
+
+    it("Query {limit: 1, order: 'desc'}", (done) => {
+      let result = index.query({limit: 1, order: 'desc'})
+      assert.deepEqual(result, ['Kyle MacGyver'])
+      done()
+    })
+
+    it("Query {limit: 1, order: 'asc'}", (done) => {
+      let result = index.query({limit: 1, order: 'asc'})
+      assert.deepEqual(result, ['Magdalen Zulauf Mr.'])
       done()
     })
   })
