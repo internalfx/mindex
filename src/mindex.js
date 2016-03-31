@@ -66,21 +66,41 @@ var BaseSecondaryIndex = {
     }
   },
 
-  getAll: function () {
+  getAll: function (opts) {
+    opts = Object.assign({
+      order: 'asc'
+    }, opts)
+
     let results = []
-    this.values.forEach(function (value) {
-      if (value.isIndex) {
-        results = results.concat(value.getAll())
-      } else {
-        results = results.concat(value)
+
+    if (opts.order === 'asc') {
+      for (let i = 0; i < this.values.length; i += 1) {
+        let value = this.values[i]
+        if (value.isIndex) {
+          results = results.concat(value.getAll(opts))
+        } else {
+          results = results.concat(value)
+        }
       }
-    })
+    } else if (opts.order === 'desc') {
+      for (let i = this.values.length - 1; i >= 0; i -= 1) {
+        let value = this.values[i]
+        if (value.isIndex) {
+          results = results.concat(value.getAll(opts))
+        } else {
+          results = results.concat(value)
+        }
+      }
+    } else {
+      throw new Error('order must be either \'asc\' or \'desc\'')
+    }
+
     return results
   },
 
   query: function (query) {
-    let leftKeys
-    let rightKeys
+    let leftKeys = []
+    let rightKeys = []
 
     if (query['>']) {
       leftKeys = query['>']
@@ -109,11 +129,20 @@ var BaseSecondaryIndex = {
     opts = Object.assign({
       leftInclusive: true,
       rightInclusive: false,
+      order: 'asc',
       limit: undefined,
       offset: 0
     }, opts)
 
-    let results = this._between(leftKeys, rightKeys, opts)
+    let results = []
+
+    if (opts.order === 'asc') {
+      results = this._betweenAsc(leftKeys, rightKeys, opts)
+    } else if (opts.order === 'desc') {
+      results = this._betweenDesc(leftKeys, rightKeys, opts)
+    } else {
+      throw new Error('order must be either \'asc\' or \'desc\'')
+    }
 
     if (opts.limit) {
       return results.slice(opts.offset, opts.limit + opts.offset)
@@ -122,7 +151,7 @@ var BaseSecondaryIndex = {
     }
   },
 
-  _between: function (leftKeys, rightKeys, opts) {
+  _betweenAsc: function (leftKeys, rightKeys, opts) {
     let results = []
 
     let leftKey = leftKeys.shift()
@@ -172,14 +201,94 @@ var BaseSecondaryIndex = {
 
         if (this.values[i].isIndex) {
           if (currKey === leftKey) {
-            results = results.concat(this.values[i]._between(clone(leftKeys), rightKeys.map(function () { return undefined }), opts))
+            results = results.concat(this.values[i]._betweenAsc(clone(leftKeys), rightKeys.map(function () { return undefined }), opts))
           } else if (currKey === rightKey) {
-            results = results.concat(this.values[i]._between(leftKeys.map(function () { return undefined }), clone(rightKeys), opts))
+            results = results.concat(this.values[i]._betweenAsc(leftKeys.map(function () { return undefined }), clone(rightKeys), opts))
           } else {
             results = results.concat(this.values[i].getAll())
           }
         } else {
           results = results.concat(this.values[i])
+        }
+
+        if (opts.limit) {
+          if (results.length >= (opts.limit + opts.offset)) {
+            break
+          }
+        }
+      }
+    }
+
+    if (opts.limit) {
+      return results.slice(0, opts.limit + opts.offset)
+    } else {
+      return results
+    }
+  },
+
+  // TODO: For now, duplicate all the code of _between into two methods, until it is known how different the two methods are.
+  _betweenDesc: function (leftKeys, rightKeys, opts) {
+    let results = []
+
+    let leftKey = leftKeys.shift()
+    let rightKey = rightKeys.shift()
+
+    let pos
+
+    if (rightKey !== undefined) {
+      pos = binarySearch(this.keys, rightKey)
+    } else {
+      pos = {
+        found: false,
+        index: this.keys.length - 1
+      }
+    }
+
+    if (leftKeys.length === 0) {
+      if (pos.found && opts.rightInclusive === false) {
+        pos.index -= 1
+      }
+
+      for (let i = pos.index; i >= 0; i -= 1) {
+        if (leftKey !== undefined) {
+          if (opts.leftInclusive) {
+            if (this.keys[i] < leftKey) { break }
+          } else {
+            if (this.keys[i] <= leftKey) { break }
+          }
+        }
+
+        if (this.values[i].isIndex) {
+          results = results.concat(this.values[i].getAll(opts))
+        } else {
+          let list = this.values[i].slice()
+          list.reverse()
+          results = results.concat(list)
+        }
+
+        if (opts.limit) {
+          if (results.length >= (opts.limit + opts.offset)) {
+            break
+          }
+        }
+      }
+    } else {
+      for (let i = pos.index; i >= 0; i -= 1) {
+        let currKey = this.keys[i]
+        if (currKey < leftKey) { break }
+
+        if (this.values[i].isIndex) {
+          if (currKey === rightKey) {
+            results = results.concat(this.values[i]._betweenDesc(leftKeys.map(function () { return undefined }), clone(rightKeys), opts))
+          } else if (currKey === leftKey) {
+            results = results.concat(this.values[i]._betweenDesc(clone(leftKeys), rightKeys.map(function () { return undefined }), opts))
+          } else {
+            results = results.concat(this.values[i].getAll(opts))
+          }
+        } else {
+          let list = this.values[i].slice()
+          list.reverse()
+          results = results.concat(list)
         }
 
         if (opts.limit) {
