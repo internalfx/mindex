@@ -9,7 +9,7 @@ Mindex makes finding information fast.
 
 ### Features
 
-- **Small** - Under 300 lines of code.
+- **Small** - Under 500 lines of code.
 - **Fast** - Records can be found in O(log n) time.
 - **Powerful** - Supports compound keys and allows for a simple query syntax.
 
