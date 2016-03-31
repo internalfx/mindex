@@ -396,6 +396,8 @@ mindex.insertRecord({
 })
 
 mindex.getAll() // returns [1, 2]
+
+mindex.getAll({order: 'desc'}) // returns [2, 1]
 ```
 
 ---
