@@ -232,7 +232,7 @@ mindex.updateRecord({
 
 | key | default | type | description |
 | --- | --- | --- | --- |
-| keyList | undefined | Array, String, Integer | An array of values to search for in the index. If the index is not compound a string or integer may be used. |
+| keyList | undefined | Array, String, Integer | An array of keys to search for in the index. If the index is not compound a string or integer may be used. |
 | value | undefined | String, Integer | The value to insert at the given key |
 
 ##### returns
@@ -270,7 +270,7 @@ mindex.get(['Denver', 35]) // returns [1]
 
 | key | default | type | description |
 | --- | --- | --- | --- |
-| keyList | undefined | Array, String, Integer | An array of values to search for in the index. If the index is not compound a string or integer may be used. |
+| keyList | undefined | Array, String, Integer | An array of keys to search for in the index. If the index is not compound a string or integer may be used. |
 
 ##### returns
 
@@ -313,7 +313,7 @@ mindex.get('Denver') // returns [1, 2]
 
 | key | default | type | description |
 | --- | --- | --- | --- |
-| keyList | undefined | Array, String, Integer | An array of values to search for in the index. If the index is not compound a string or integer may be used. |
+| keyList | undefined | Array, String, Integer | An array of keys to search for in the index. If the index is not compound a string or integer may be used. |
 | value | undefined | String, Integer | The value to remove at the given key |
 
 ##### returns
